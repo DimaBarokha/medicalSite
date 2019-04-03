@@ -1,0 +1,30 @@
+{
+  "name": "testPorject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/emailSend.js",
+  "scripts": {
+    "start": "node ./server/emailSend.js",
+    "server": "nodemon ./server/emailSend.js",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DimaBarokha/Diplom.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DimaBarokha/Diplom/issues"
+  },
+  "homepage": "https://github.com/DimaBarokha/Diplom#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "concurrently": "^4.1.0",
+    "express": "^4.16.4",
+    "nodemailer": "^6.0.0",
+    "nodemon": "^1.18.10"
+  }
+}
