@@ -1,47 +1,37 @@
 import {MDBBtn, MDBCol, MDBContainer, MDBInput, MDBRow} from "mdbreact";
 import React from "react";
+import doctor from '../Staff/img/doctor1.jpg'
+import BranchesComponent from './stepData/branchesComponent'
+import branchesData from './stepData/branchesData'
 
-export default function getStepContent(step, func) {
+export default function getStepContent(step, nextStep) {
     switch (step) {
         case 0:
             return (
                 <MDBContainer>
                     <MDBRow>
+                        {
+                            branchesData.map((items, index) =>
+                                <BranchesComponent data={items} onClick={nextStep} key={index}/>
+                            )}
+                    </MDBRow>
+                </MDBContainer>
+            );
+        case 1:
+            return (
+                <MDBContainer>
+                    <MDBRow>
                         <MDBCol md="4">
-                            <div className="branch">
-                                <input type="text" value="Врач хирург" onClick={func} readOnly/>
-                            </div>
-                        </MDBCol>
-                        <MDBCol md="4">
-                            <div className="branch">
-                                <input type="text" value="Врач Терапевт" onClick={func} readOnly/>
-                            </div>
-                        </MDBCol>
-                        <MDBCol md="4">
-                            <div className="branch">
-                                <input type="text" value="Врач каридиолог" onClick={func} readOnly/>
-                            </div>
-                        </MDBCol>
-                        <MDBCol md="4">
-                            <div className="branch">
-                                <input type="text" value="Врач невролог" onClick={func} readOnly/>
-                            </div>
-                        </MDBCol>
-                        <MDBCol md="4">
-                            <div className="branch">
-                                <input type="text" value="Врач стомотолог" onClick={func} readOnly/>
-                            </div>
-                        </MDBCol>
-                        <MDBCol md="4">
-                            <div className="branch">
-                                <input type="text" value="Врач аллерголог" onClick={func} readOnly/>
+                            <div className="doctor d-flex" onClick={nextStep}>
+                                <h3 className="doctor__name">
+                                    Царик С А
+                                </h3>
+                                <img src={doctor} alt=""/>
                             </div>
                         </MDBCol>
                     </MDBRow>
                 </MDBContainer>
             );
-        case 1:
-            return 'What is an ad group anyways?';
         case 2:
             return (
                 <MDBContainer>

@@ -1,9 +1,6 @@
-import React from "react";
+import React, {Suspense, lazy} from "react";
 import ReactDOM from "react-dom";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import App from "./App";
-
-import Register from "./components/Register/RegistPatient";
 import NotFound from './components/NotFound'
 import registerServiceWorker from './registerServiceWorker';
 //Styles
@@ -13,13 +10,25 @@ import "mdbreact/dist/css/mdb.css";
 import './assets/main.scss'
 import "./assets/_404page.scss"
 
+const App = lazy(() => import('./App'));
+const Register = lazy(() => import ('./components/Register'));
+const cube =
+    <div className="load">
+        <hr/>
+        <hr/>
+        <hr/>
+        <hr/>
+    </div>
+
 ReactDOM.render(
     <Router>
-        <Switch>
-            <Route exact path="/" component={App}/>
-            <Route path="/register" component={Register}/>
-            <Route component={NotFound}/>
-        </Switch>
+        <Suspense fallback={cube}>
+            <Switch>
+                <Route exact path="/" component={App}/>
+                <Route path="/register" component={Register}/>
+                <Route component={NotFound}/>
+            </Switch>
+        </Suspense>
     </Router>
     , document.getElementById('root'));
 registerServiceWorker();

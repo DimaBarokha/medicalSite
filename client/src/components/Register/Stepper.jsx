@@ -30,21 +30,15 @@ function getSteps() {
 class HorizontalLinearStepper extends React.Component {
     state = {
         activeStep: 0,
-        skipped: new Set(),
     };
 
     isStepOptional = step => step === 1;
 
     handleNext = () => {
         const {activeStep} = this.state;
-        let {skipped} = this.state;
-        if (this.isStepSkipped(activeStep)) {
-            skipped = new Set(skipped.values());
-            skipped.delete(activeStep);
-        }
         this.setState({
             activeStep: activeStep + 1,
-            skipped,
+
         });
     };
 
@@ -54,34 +48,11 @@ class HorizontalLinearStepper extends React.Component {
         }));
     };
 
-    handleSkip = () => {
-        const {activeStep} = this.state;
-        if (!this.isStepOptional(activeStep)) {
-            // You probably want to guard against something like this,
-            // it should never occur unless someone's actively trying to break something.
-            throw new Error("You can't skip a step that isn't optional.");
-        }
-
-        this.setState(state => {
-            const skipped = new Set(state.skipped.values());
-            skipped.add(activeStep);
-            return {
-                activeStep: state.activeStep + 1,
-                skipped,
-            };
-        });
-    };
-
     handleReset = () => {
         this.setState({
             activeStep: 0,
         });
     };
-
-    isStepSkipped(step) {
-        return this.state.skipped.has(step);
-    }
-
 
     render() {
         const {classes} = this.props;
@@ -96,9 +67,6 @@ class HorizontalLinearStepper extends React.Component {
                         const labelProps = {};
                         if (this.isStepOptional(index)) {
                             labelProps.optional = <Typography variant="caption">Optional</Typography>;
-                        }
-                        if (this.isStepSkipped(index)) {
-                            props.completed = false;
                         }
                         return (
                             <Step key={label} {...props}>
@@ -129,23 +97,13 @@ class HorizontalLinearStepper extends React.Component {
                                 >
                                     Back
                                 </Button>
-                                {this.isStepOptional(activeStep) && (
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={this.handleSkip}
-                                        className={classes.button}
-                                    >
-                                        Skip
-                                    </Button>
-                                )}
                                 <Button
                                     variant="contained"
                                     color="primary"
                                     onClick={this.handleNext}
                                     className={classes.button}
                                 >
-                                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                                    {activeStep === steps.length - 1 ? 'Finish':'Next'}
                                 </Button>
                             </div>
                         </div>
