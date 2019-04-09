@@ -1,6 +1,6 @@
 import {MDBBtn, MDBCol, MDBContainer, MDBInput, MDBRow} from "mdbreact";
 import React from "react";
-//need REdux
+
 export default function getStepContent(step, func) {
     switch (step) {
         case 0:
