@@ -1,58 +1,106 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import getStepContent from './getStepContent'
+import React from "react";
+import {withStyles} from "@material-ui/core/styles";
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepLabel from "@material-ui/core/StepLabel";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import BranchComponent from "./stepData/Branch/branchesComponent";
+import branchesData from "./stepData/Branch/branchesData";
+import {Doctor} from "./stepData/Doctors";
+import doctorData from "./stepData/Doctors/doctorData";
+import {MDBContainer, MDBRow} from "mdbreact";
+import DatePicker from "./stepData/DatePicker";
 
 const styles = theme => ({
     root: {
-        width: '90%',
+        width: "90%"
     },
-    color: '#2196f3',
-    button: {
-        marginRight: theme.spacing.unit,
+    backButton: {
+        marginRight: theme.spacing.unit
     },
     instructions: {
         marginTop: theme.spacing.unit,
-        marginBottom: theme.spacing.unit,
-    },
+        marginBottom: theme.spacing.unit
+    }
 });
 
 function getSteps() {
-    return ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+    return [
+        "Select master blaster campaign settings",
+        "Create an ad group",
+        "Create an ad"
+    ];
 }
 
-
-class HorizontalLinearStepper extends React.Component {
+class HorizontalLabelPositionBelowStepper extends React.Component {
     state = {
         activeStep: 0,
+        date: null
     };
 
-    isStepOptional = step => step === 1;
+    handleDateChange = date => this.setState({date})
 
     handleNext = () => {
-        const {activeStep} = this.state;
-        this.setState({
-            activeStep: activeStep + 1,
-
-        });
+        this.setState(state => ({
+            activeStep: state.activeStep + 1
+        }));
     };
 
     handleBack = () => {
         this.setState(state => ({
-            activeStep: state.activeStep - 1,
+            activeStep: state.activeStep - 1
         }));
     };
 
     handleReset = () => {
         this.setState({
-            activeStep: 0,
+            activeStep: 0
         });
     };
+
+    getStepContent(stepIndex) {
+        const {date} = this.state;
+        switch (stepIndex) {
+            case 0:
+                return (
+                    <>
+                        <MDBRow>
+                            {branchesData.map((data, index) => (
+                                <BranchComponent
+                                    data={data}
+                                    key={index}
+                                    pickDoctor={item => alert(item.name)}
+                                    cbClick={this.handleNext}
+                                />
+                            ))}
+                        </MDBRow>
+                    </>
+                );
+            case 1:
+                return (
+                    <>
+                        <MDBContainer>
+                            <MDBRow>
+                                {doctorData.map(data => (
+                                    <Doctor data={data} cbCLick={this.handleNext}/>
+                                ))}
+                            </MDBRow>
+                        </MDBContainer>
+                    </>
+                );
+            case 2:
+                return (
+                    <>
+                        {date && <p>Выбранная дата: {date.toLocaleDateString()}</p>}
+                        <DatePicker onChange = {this.handleDateChange}/>
+                    </>
+                );
+
+            default:
+                return "Unknown stepIndex";
+        }
+    }
 
     render() {
         const {classes} = this.props;
@@ -61,39 +109,31 @@ class HorizontalLinearStepper extends React.Component {
 
         return (
             <div className={classes.root}>
-                <Stepper activeStep={activeStep} style={{backgroundColor: "#eceff1"}}>
-                    {steps.map((label, index) => {
-                        const props = {};
-                        const labelProps = {};
-                        if (this.isStepOptional(index)) {
-                            labelProps.optional = <Typography variant="caption">Optional</Typography>;
-                        }
-                        return (
-                            <Step key={label} {...props}>
-                                <StepLabel {...labelProps}>{label}</StepLabel>
-                            </Step>
-                        );
-                    })}
+                <Stepper activeStep={activeStep} alternativeLabel>
+                    {steps.map(label => (
+                        <Step key={label}>
+                            <StepLabel>{label}</StepLabel>
+                        </Step>
+                    ))}
                 </Stepper>
                 <div>
-                    {activeStep === steps.length ? (
+                    {this.state.activeStep === steps.length ? (
                         <div>
                             <Typography className={classes.instructions}>
-                                All steps completed - you&apos;re finished
+                                All steps completed
                             </Typography>
-                            <Button onClick={this.handleReset} className={classes.button}>
-                                Reset
-                            </Button>
+                            <Button onClick={this.handleReset}>Reset</Button>
                         </div>
                     ) : (
                         <div>
-                            <Typography
-                                className={classes.instructions}>{getStepContent(activeStep, this.handleNext)}</Typography>
+                            <div className={classes.instructions}>
+                                {this.getStepContent(activeStep)}
+                            </div>
                             <div>
                                 <Button
                                     disabled={activeStep === 0}
                                     onClick={this.handleBack}
-                                    className={classes.button}
+                                    className={classes.backButton}
                                 >
                                     Back
                                 </Button>
@@ -101,9 +141,8 @@ class HorizontalLinearStepper extends React.Component {
                                     variant="contained"
                                     color="primary"
                                     onClick={this.handleNext}
-                                    className={classes.button}
                                 >
-                                    {activeStep === steps.length - 1 ? 'Finish':'Next'}
+                                    {activeStep === steps.length - 1 ? "Finish" : "Next"}
                                 </Button>
                             </div>
                         </div>
@@ -114,10 +153,5 @@ class HorizontalLinearStepper extends React.Component {
     }
 }
 
-HorizontalLinearStepper.propTypes = {
-    classes: PropTypes.object,
-};
 
-export default withStyles(styles)(HorizontalLinearStepper);
-
-
+export default withStyles(styles)(HorizontalLabelPositionBelowStepper);
