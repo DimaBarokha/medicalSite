@@ -4,7 +4,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import NotFound from './components/NotFound'
 import registerServiceWorker from './registerServiceWorker';
 import {Provider} from 'react-redux'
-import {store} from "./components/store";
+import store from "./components/store/index";
 //Styles
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";

@@ -10,7 +10,8 @@ import branchesData from "./stepData/Branch/branchesData";
 import {Doctor} from "./stepData/Doctors";
 import doctorData from "./stepData/Doctors/doctorData";
 import {MDBContainer, MDBRow} from "mdbreact";
-import DatePicker from "./stepData/DatePicker";
+import DatePicker from ".././Register/stepData/Form/TimePicker";
+import FormPage from "./stepData/Form";
 
 const styles = theme => ({
     root: {
@@ -27,8 +28,9 @@ const styles = theme => ({
 
 function getSteps() {
     return [
-        "Select master blaster campaign settings",
-        "Create an ad group",
+        "Выбор отделения",
+        "Выбор врача",
+        "Выбор даты",
         "Create an ad"
     ];
 }
@@ -61,6 +63,7 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
 
     getStepContent(stepIndex) {
         const {date} = this.state;
+        let choice = this.value;
         switch (stepIndex) {
             case 0:
                 return (
@@ -92,8 +95,12 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
             case 2:
                 return (
                     <>
-                        {date && <p>Выбранная дата: {date.toLocaleDateString()}</p>}
-                        <DatePicker onChange = {this.handleDateChange}/>
+                        <FormPage/>
+                    </>
+                );
+            case 3:
+                return (
+                    <>
                     </>
                 );
 

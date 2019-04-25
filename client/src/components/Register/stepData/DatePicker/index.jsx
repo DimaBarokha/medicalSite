@@ -3,7 +3,8 @@ import style from "./index.module.css";
 import * as calendar from "./datePickerModules";
 import classnames from "classnames";
 
-export default class Index extends React.Component {
+
+export default class DatePicker extends React.Component {
     static defaultProps = {
         date: new Date(),
         years: [2019, 2020],
@@ -48,6 +49,13 @@ export default class Index extends React.Component {
         console.log(date);
         this.setState({date});
     };
+
+    checkDate = (current, pickedDate) => {
+        if (current > pickedDate) {
+            return alert('Вы выбрали дату меньше текущей')
+        }
+    };
+
     handleSelectChange = () => {
         const year = this.yearSelect.value;
         const month = this.monthSelect.value;
@@ -56,9 +64,11 @@ export default class Index extends React.Component {
         this.setState({date});
     };
     handleDayClick = date => {
-        console.log(date);
+        console.log(date.getDay());
         this.setState({selectedDate: date});
         this.props.onChange(date);
+        console.log(this.state.currentDate)
+        this.checkDate(this.state.currentDate, date);
     };
 
     render() {
@@ -68,6 +78,7 @@ export default class Index extends React.Component {
 
         return (
             <div className={style.calendar}>
+
                 <div className={style.header}>
                     <button
                         className={style.btn}

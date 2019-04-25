@@ -1,6 +1,10 @@
+import React from 'react'
+import AlertPage from "./Alert";
+
 const DAYS_IN_WEEK = 7;
 const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const WEEK_DAYS_FROM_MONDAY = [6, 0, 1, 2, 3, 4, 5];
+
 
 export function areEqual(a, b) {
     if (!a || !b) return false;
@@ -41,6 +45,8 @@ export function getDaysInMonth(date) {
     }
     return DAYS_IN_MONTH[month];
 }
+
+
 
 export function getDaysOfWeek(date) {
     const dayOfWeek = date.getDay();
