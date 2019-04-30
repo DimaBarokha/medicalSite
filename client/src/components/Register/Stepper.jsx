@@ -10,7 +10,6 @@ import branchesData from "./stepData/Branch/branchesData";
 import {Doctor} from "./stepData/Doctors";
 import doctorData from "./stepData/Doctors/doctorData";
 import {MDBContainer, MDBRow} from "mdbreact";
-import DatePicker from ".././Register/stepData/Form/TimePicker";
 import FormPage from "./stepData/Form";
 
 const styles = theme => ({
@@ -27,21 +26,36 @@ const styles = theme => ({
 });
 
 function getSteps() {
-    return [
-        "Выбор отделения",
-        "Выбор врача",
-        "Выбор даты",
-        "Create an ad"
-    ];
+    return ([
+        <p>Выбор отделения</p>,
+        <p>Выбор врача</p>,
+        <p>Заполнение данных</p>,
+    ]);
 }
 
 class HorizontalLabelPositionBelowStepper extends React.Component {
-    state = {
-        activeStep: 0,
-        date: null
-    };
+    constructor(props) {
+        super(props)
+        this.state = {
+            activeStep: 0,
+            date: null,
+            values: []
+        };
+        this.addValueToArray = this.addValueToArray.bind(this);
+    }
 
-    handleDateChange = date => this.setState({date})
+
+    addValueToArray(e) {
+        const {textContent} =  this.setState({
+            values: e.target.value
+        });
+        const {values} = this.state;
+        if (values.indexOf(textContent) === -1) {
+            this.setState({
+                values: [...this.state.values, textContent]
+            });
+        }
+    }
 
     handleNext = () => {
         this.setState(state => ({
@@ -62,8 +76,6 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
     };
 
     getStepContent(stepIndex) {
-        const {date} = this.state;
-        let choice = this.value;
         switch (stepIndex) {
             case 0:
                 return (
@@ -74,9 +86,14 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
                                     data={data}
                                     key={index}
                                     pickDoctor={item => alert(item.name)}
-                                    cbClick={this.handleNext}
+                                    cbClick={e => this.addValueToArray(e)}
                                 />
                             ))}
+                            <ul>
+                                {this.state.values.map((value, index) => (
+                                    <li key={index}>{value}</li>
+                                ))}
+                            </ul>
                         </MDBRow>
                     </>
                 );
@@ -120,6 +137,7 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
                     {steps.map(label => (
                         <Step key={label}>
                             <StepLabel>{label}</StepLabel>
+
                         </Step>
                     ))}
                 </Stepper>

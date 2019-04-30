@@ -18,7 +18,7 @@ function DateFnsLocalizationExample() {
         <MuiPickersUtilsProvider utils={LocalizedUtils} locale={ruLocale}>
             <div className="md-form">
                 <div className="d-flex">
-                <MDBIcon far icon="calendar-alt" />
+                <MDBIcon far className="icon" icon="calendar-alt" />
                 <DatePicker
                     clearable
                     helperText="Дата вашего приема"

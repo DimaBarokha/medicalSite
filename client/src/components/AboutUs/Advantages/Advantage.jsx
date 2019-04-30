@@ -1,8 +1,5 @@
 import React from "react";
 import {MDBCol} from "mdbreact";
-import carriage from "../img/carriage.png";
-import doctor from "../img/doctorPicture.png"
-import syringe from "../img/syringe.png"
 
 const Advantage = ({items}) => {
     return (

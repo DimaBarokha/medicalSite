@@ -33,7 +33,7 @@ app.post("/api/form", (req, res) => {
 
         let mailOptions = {
             from: `${req.body.email}`, // sender address
-            to: "dima@barokha.com", // list of receivers
+            to: `medicalhosad@gmail.com`, // list of receivers
             subject: "Hello ✔", // Subject line
             text: req.body.message, // plain text body
             html: htmlEMail // html body

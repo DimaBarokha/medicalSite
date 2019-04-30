@@ -1,49 +1,23 @@
 import React from "react";
 import {Field, reduxForm} from "redux-form";
 import {MDBCol, MDBContainer, MDBInput, MDBRow} from "mdbreact";
-import DatePick from './TimePicker'
-const validate = values => {
-    const errors = {};
-    if (!values.username && !values.lastname) {
-        errors.username = "Обязательно для заполнения";
-        errors.lastname = "Обязательно для заполнения"
-    } else if (values.username.length > 15 && values.lastname.length > 15) {
-        errors.username = "Должно быть меньше 15 символов";
-        errors.lastname = "Должно быть меньше 15 символов";
-    }
-  /*  if (!values.lastname) {
-        errors.lastname = "Обязательно для заполнения"
-    } else if (values.username.length > 15) {
-        errors.username = "Должно быть меньше 15 символов";
-        errors.lastname = "Должно быть меньше 15 символов";
-    }*/
+import DatePick from "./DatePicker/TimePicker";
+import {validate} from "./validation";
 
-    if (!values.email) {
-        errors.email = "Required";
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        errors.email = "Invalid email address";
-    }
-    if (!values.age) {
-        errors.age = "Required";
-    } else if (isNaN(Number(values.age))) {
-        errors.age = "Must be a number";
-    } else if (Number(values.age) < 18) {
-        errors.age = "Sorry, you must be at least 18 years old";
-    }
-    return errors;
-};
 
 const warn = values => {
     const warnings = {};
     if (values.age < 19) {
         warnings.age = "Hmm, you seem a bit young...";
     }
-    if ((!/^[а-яё]+$/i.test(values.username))) {
+    if (!values.complaints) {
+        warnings.complaints = "Желательно заполнить ваши жалобу, можно максимально кратко, чтоб доктору знать с чем он бдует иметь дело";
+    }
+    if (!/^[а-яё]+$/i.test(values.username)) {
         warnings.username = "Указывайте пожалуйста на русском ваши данные";
     }
     return warnings;
 };
-
 const renderField = ({
                          input,
                          icon,
@@ -63,7 +37,9 @@ const renderField = ({
                 icon={icon}
             />
             {touched &&
-            ((error && <span className="error_message">{`Поле ${label} ${error}`}</span>) ||
+            ((error && (
+                    <span className="error_message">{`Поле ${label} ${error}`}</span>
+                )) ||
                 (warning && <span className="warning-color">{warning}</span>))}
         </div>
     </div>
@@ -92,9 +68,41 @@ const SyncValidationForm = props => {
                             component={renderField}
                             label="Ваша фамилия*"
                         />
-                        <Field name="date"  icon="user" type="email" id="form3" component={DatePick}/>
-                        <Field name="mobile" type="email" component={renderField}/>
-                        <Field name="age" type="number" component={renderField}/>
+                        <Field
+                            name="date"
+                            icon="user"
+                            type="email"
+                            id="form3"
+                            component={DatePick}
+                        />
+                        <Field
+                            name="email"
+                            type="email"
+                            icon="envelope"
+                            label="Ваш email*"
+                            component={renderField}
+                        />
+                        <Field
+                            name="age"
+                            type="number"
+                            icon="baby-carriage"
+                            label="Возраст пациента*"
+                            component={renderField}
+                        />
+                        <Field
+                            name="complaints"
+                            icon="medkit"
+                            type="textarea"
+                            component={renderField}
+                            label="Краткое описание жалоб*"
+                        />
+                        <Field
+                            name="doctor"
+                            type="text"
+                            icon="user-md"
+                            label="Ваш доктор"
+                            component={renderField}
+                        />
                         <div>
                             <button type="submit" disabled={submitting}>
                                 Submit
