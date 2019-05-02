@@ -1,23 +1,56 @@
 import React from "react";
 import {Field, reduxForm} from "redux-form";
-import {MDBCol, MDBContainer, MDBInput, MDBRow} from "mdbreact";
+import {MDBCol, MDBContainer, MDBInput, MDBRow, MDBIcon} from "mdbreact";
 import DatePick from "./DatePicker/TimePicker";
 import {validate} from "./validation";
-
-
+import InputMask from "react-input-mask";
+import MaterialInput from "@material-ui/core/Input";
+import timeSelect from './Select'
 const warn = values => {
     const warnings = {};
     if (values.age < 19) {
         warnings.age = "Hmm, you seem a bit young...";
     }
     if (!values.complaints) {
-        warnings.complaints = "Желательно заполнить ваши жалобу, можно максимально кратко, чтоб доктору знать с чем он бдует иметь дело";
+        warnings.complaints =
+            "Желательно заполнить ваши жалобу, можно максимально кратко, чтоб доктору знать с чем он бдует иметь дело";
     }
     if (!/^[а-яё]+$/i.test(values.username)) {
         warnings.username = "Указывайте пожалуйста на русском ваши данные";
     }
     return warnings;
 };
+const renderMask = ({
+                        input,
+                        icon,
+                        label,
+                        id,
+                        type,
+                        meta: {touched, error, warning}
+                    }) => (
+    <div>
+        <div className="d-flex">
+            <MDBIcon icon="phone" className="icon"/>
+            <InputMask mask="+375 (99) 999-99-99" disabled={false} {...input}>
+                {inputProps => (
+                    <MaterialInput
+                        name="mobile"
+                        {...inputProps}
+                        type="tel"
+                        fullWidth
+                        disableUnderline
+                        placeholder="Ваш номер телефона"
+                    />
+                )}
+            </InputMask>
+            {touched &&
+            ((error && (
+                    <span className="error_message">{`Поле ${label} ${error}`}</span>
+                )) ||
+                (warning && <span className="warning-color">{warning}</span>))}
+        </div>
+    </div>
+);
 const renderField = ({
                          input,
                          icon,
@@ -71,16 +104,24 @@ const SyncValidationForm = props => {
                         <Field
                             name="date"
                             icon="user"
-                            type="email"
+                            type="date"
                             id="form3"
                             component={DatePick}
                         />
+
                         <Field
                             name="email"
                             type="email"
                             icon="envelope"
                             label="Ваш email*"
                             component={renderField}
+                        />
+                        <Field
+                            name="mobile"
+                            type="tel"
+                            icon="user-md"
+                            label="Ваш телефон"
+                            component={renderMask}
                         />
                         <Field
                             name="age"

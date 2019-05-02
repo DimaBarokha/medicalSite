@@ -85,15 +85,9 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
                                 <BranchComponent
                                     data={data}
                                     key={index}
-                                    pickDoctor={item => alert(item.name)}
-                                    cbClick={e => this.addValueToArray(e)}
+                                    pickDoctor={}
                                 />
                             ))}
-                            <ul>
-                                {this.state.values.map((value, index) => (
-                                    <li key={index}>{value}</li>
-                                ))}
-                            </ul>
                         </MDBRow>
                     </>
                 );

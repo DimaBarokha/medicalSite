@@ -2,9 +2,8 @@ import React from 'react'
 import {MDBCol} from "mdbreact";
 
 const BranchComponent = ({data, cbClick,pickDoctor}) => {
-    const handlerClick = () => {
-       cbClick();
-       pickDoctor(data);
+    const handlerClick = (event) => {
+       pickDoctor(this.props.setDoctorBranch(event.target.value));
     }
     return(
         <MDBCol md="4">

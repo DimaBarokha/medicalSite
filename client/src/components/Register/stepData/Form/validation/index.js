@@ -1,11 +1,14 @@
- export const validate = values => {
+export const validate = values => {
     const errors = {};
-    if (!values.username ) {
+    if (!values.mobile) {
+        errors.mobile = "Обязательно для заполнения";
+    }
+    if (!values.username) {
         errors.username = "Обязательно для заполнения";
     } else if (values.username.length > 15) {
         errors.username = "Должно быть меньше 15 символов";
     }
-    if (!values.lastname ) {
+    if (!values.lastname) {
         errors.lastname = "Обязательно для заполнения";
     } else if (values.lastname.length > 15) {
         errors.lastname = "Должно быть меньше 15 символов";
