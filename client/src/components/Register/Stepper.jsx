@@ -11,6 +11,7 @@ import {Doctor} from "./stepData/Doctors";
 import doctorData from "./stepData/Doctors/doctorData";
 import {MDBContainer, MDBRow} from "mdbreact";
 import FormPage from "./stepData/Form";
+import BranchContainer from "./stepData/Branch/BranchContainer";
 
 const styles = theme => ({
     root: {
@@ -81,13 +82,7 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
                 return (
                     <>
                         <MDBRow>
-                            {branchesData.map((data, index) => (
-                                <BranchComponent
-                                    data={data}
-                                    key={index}
-                                    pickDoctor={}
-                                />
-                            ))}
+                            <BranchContainer/>
                         </MDBRow>
                     </>
                 );
