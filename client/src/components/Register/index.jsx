@@ -1,12 +1,10 @@
 import React from 'react';
-import {MDBCol, MDBContainer, MDBRow, MDBFooter} from "mdbreact";
+import {NavLink} from "react-router-dom";
+import {MDBCol, MDBContainer, MDBRow} from "mdbreact";
 import logo from './logo.png'
 import Stepps from './Stepper'
-export default class RegistPatient extends React.Component {
-    constructor() {
-        super();
-    }
 
+export default class Index extends React.Component {
     render() {
         return (
             <>
@@ -14,9 +12,11 @@ export default class RegistPatient extends React.Component {
                     <MDBContainer className="mt-5 mb-4 text-center text-md-left">
                         <MDBRow className="mt-4">
                             <MDBCol md="2" lg="2" xl="2" className="mb-4 dark-grey-text">
-                                <h6 className="text-uppercase font-weight-bold">
-                                    <img src={logo} alt=""/>
-                                </h6>
+                                <NavLink to='/'>
+                                    <h6 className="text-uppercase font-weight-bold">
+                                        <img src={logo} alt="На главную"/>
+                                    </h6>
+                                </NavLink>
                             </MDBCol>
                             <MDBCol md="4" lg="4" xl="4" className="mb-4 dark-grey-text">
                                 <h6 className="text-uppercase font-weight-bold">
@@ -53,13 +53,12 @@ export default class RegistPatient extends React.Component {
                         </MDBRow>
                     </MDBContainer>
                 </header>
-                <main style={{backgroundColor: "#eceff1"}}>
+                <main style={{backgroundColor: "#eceff1",height: '100%'}}>
                     <MDBContainer>
                         <MDBRow>
                             <MDBCol md="12" lg="12" xl="12" className="">
                                 <Stepps/>
                             </MDBCol>
-
                         </MDBRow>
                     </MDBContainer>
                 </main>
