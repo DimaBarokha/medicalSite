@@ -1,28 +1,17 @@
 import React from 'react'
 import {MDBCol} from "mdbreact";
 
-class BranchComponent extends React.Component {
-    constructor(props) {
-        super(props);
-        this.onBranchClick = this.onBranchClick.bind(this)
+const BranchComponent = ({data, cbClick,pickDoctor}) => {
+    const handlerClick = () => {
+        cbClick();
+        pickDoctor(data);
     }
-
-    onBranchClick(event) {
-        this.props.setDoctorBranch(event.target.value)
-    }
-
-    render() {
-        return (
-
-            <MDBCol md="4">
-                <div className="branch">
-                    <input type="text" value={this.props.name} onClick={this.onBranchClick} readOnly/>
-                </div>
-            </MDBCol>
-        )
-    }
-
-
+    return(
+        <MDBCol md="4">
+            <div className="branch">
+                <input type="text" value={data.name}  onClick={handlerClick} readOnly/>
+            </div>
+        </MDBCol>
+    )
 }
-
 export default BranchComponent;

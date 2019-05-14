@@ -1,21 +1,17 @@
 import React from 'react'
-import BranchesComponent from './branchesComponent'
+import branchesComponent from './branchesComponent'
 import {connect} from 'react-redux'
-import {setDoctorBranch} from "../../../store/Branch/actions";
 
 class BranchContainer extends React.Component {
     render() {
-        return (<BranchesComponent name="Терапивтическое отделение" setDoctorBranch={this.props.setDoctorBranch} />);
+        return (<branchesComponent/>);
     }
 }
-
-const mapStateToProps = state => {
-    return {
-        doctorBranch: state.pick.doctorBranch
-    }
+const mapStateToProps=()=>{
+    return{}
 }
 
-const mapDispatchToProps = {
-    setDoctorBranch: setDoctorBranch,
+const mapDispatchToProps = ()=>{
+    return{}
 }
-export default connect(mapStateToProps, mapDispatchToProps)(BranchContainer);
+export default connect(mapStateToProps,);
