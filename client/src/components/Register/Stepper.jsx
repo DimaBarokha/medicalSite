@@ -9,7 +9,7 @@ import BranchComponent from "./stepData/Branch/branchesComponent";
 import branchesData from "./stepData/Branch/branchesData";
 import {Doctor} from "./stepData/Doctors";
 import doctorData from "./stepData/Doctors/doctorData";
-import {MDBContainer, MDBRow} from "mdbreact";
+import {MDBCol, MDBContainer, MDBRow} from "mdbreact";
 import FormPage from "./stepData/Form";
 import BranchContainer from "./stepData/Branch/BranchContainer";
 
@@ -39,15 +39,32 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
         super(props)
         this.state = {
             activeStep: 0,
-            date: null,
-            values: []
+            values: [],
+            branches: []
         };
         this.addValueToArray = this.addValueToArray.bind(this);
     }
 
+    renderBranches = ({id_Branch, name}) =>
+        <MDBCol md="4">
+        <div className="branch">
+            <input type="text" value={name}  key = {id_Branch} onClick={this.handleNext} readOnly/>
+
+        </div>
+    </MDBCol>
+    getBranches = _ => {
+        fetch('http://localhost:3001/branches')
+            .then(response => response.json())
+            .then(response =>this.setState({branches: response.data}))
+            .catch(err => console.log(err))
+    }
+
+    componentDidMount() {
+        this.getBranches();
+    }
 
     addValueToArray(e) {
-        const {textContent} =  this.setState({
+        const {textContent} = this.setState({
             values: e.target.value
         });
         const {values} = this.state;
@@ -77,19 +94,21 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
     };
 
     getStepContent(stepIndex) {
+        const {branches} = this.state
         switch (stepIndex) {
             case 0:
                 return (
                     <>
                         <MDBRow>
-                            {branchesData.map((data, index) => (
+                            {branches.map(this.renderBranches)}
+                            {/*         {branchesData.map((data, index) => (
                                 <BranchComponent
                                     data={data}
                                     key={index}
                                     pickDoctor={item => alert(item.name)}
                                     cbClick={this.handleNext}
                                 />
-                            ))}
+                            ))}*/}
                         </MDBRow>
                     </>
                 );
@@ -133,7 +152,6 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
                     {steps.map(label => (
                         <Step key={label}>
                             <StepLabel>{label}</StepLabel>
-
                         </Step>
                     ))}
                 </Stepper>
@@ -143,7 +161,6 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
                             <Typography className={classes.instructions}>
                                 All steps completed
                             </Typography>
-                            <Button onClick={this.handleReset}>Reset</Button>
                         </div>
                     ) : (
                         <div>
@@ -156,15 +173,21 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
                                     onClick={this.handleBack}
                                     className={classes.backButton}
                                 >
-                                    Back
+                                    Назад
                                 </Button>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={this.handleNext}
-                                >
-                                    {activeStep === steps.length - 1 ? "Finish" : "Next"}
-                                </Button>
+                                {
+                                    activeStep === 2 ?
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={this.handleNext}
+                                        >
+                                            Закончить
+                                        </Button>
+                                        :
+                                        null
+                                }
+
                             </div>
                         </div>
                     )}

@@ -26,6 +26,7 @@ export default class Modal extends React.Component {
 
     handleChange = e => {
         this.setState({[e.target.name]: e.target.value});
+
     };
 
     async handleSubmit(e) {

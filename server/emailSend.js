@@ -1,7 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
-
+const cors = require("cors");
+const sql = require("mssql");
 const app = express();
 
 app.use(bodyParser.json());
@@ -43,10 +44,73 @@ app.post("/api/form", (req, res) => {
                 return console.log(err);
             }
         });
-        // console.log("Message sent: %s", info.message);
-        // Preview only available when sending through an Ethereal account
-        //console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
     });
+});
+
+app.post("/api/patient", (req, res) => {
+    nodemailer.createTestAccount((err, account) => {
+        const htmlEMail = `
+            <h1>Данные для записи пациента</h1>
+            <h3>
+                <ul>   
+                    <li>${req.body.username}</li>
+                    <li>${req.body.lastname}</li>
+                    <li>${req.body.date}</li>
+                    <li>${req.body.email}</li>
+                    <li>${req.body.mobile}</li>
+                    <li>${req.body.age}</li> 
+                    <li>${req.body.doctor}</li>
+                </ul>
+                <h3>Жалобы(Пред)</h3>
+                <p>${req.body.complaints}</p>
+            </h3>
+        `;
+
+        let transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 587,
+            secure: false, // true for 465, false for other ports
+            auth: {
+                user: "medicalhosad@gmail.com", // generated ethereal user
+                pass: "1201884A" // generated ethereal password
+            }
+        });
+
+        let mailOptions = {
+            from: `${req.body.email}`, // sender address
+            to: `medicalhosad@gmail.com`, // list of receivers
+            subject: "Hello ✔", // Subject line
+            text: req.body.message, // plain text body
+            html: htmlEMail // html body
+        };
+        transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+                return console.log(err);
+            }
+        });
+    });
+});
+
+const config = {
+    server: 'DESKTOP-UHGQGHR\\SQLEXPRESS',
+    database: 'medical',
+    user: 'user',
+    password: '123123',
+
+};
+app.get('/branches', function (req, res) {
+    new sql.ConnectionPool(config).connect().then(pool => {
+        return pool.request().query("Select * from Branch")
+    }).then(result => {
+        let rows = result.recordset
+        res.setHeader('Access-Control-Allow-Origin', '*')
+        res.status(200).json({data: rows});
+        sql.close();
+    }).catch(err => {
+        res.status(500).send({message: "${err}"})
+        sql.close();
+    });
+
 });
 
 const PORT = process.env.PORT || 3001;
