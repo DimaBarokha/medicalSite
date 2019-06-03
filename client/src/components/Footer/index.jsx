@@ -33,7 +33,7 @@ const Footer = () => {
                 </MDBContainer>
             </div>
             <MDBContainer className="mt-5 mb-4 text-center text-md-left">
-                <MDBRow className="mt-3">
+                <MDBRow className="mt-3 flex-center justify-content-between">
                     <MDBCol md="3" lg="4" xl="3" className="mb-4 dark-grey-text">
                         <h6 className="text-uppercase font-weight-bold">
                             <strong>Medical</strong>
@@ -43,61 +43,9 @@ const Footer = () => {
                             Все права защищены. Доверясь нам вы будете в надежных и безопастных руках
                         </p>
                     </MDBCol>
-                    <MDBCol md="2" lg="2" xl="2" className="mb-4 dark-grey-text">
-                        <h6 className="text-uppercase font-weight-bold">
-                            <strong>Products</strong>
-                        </h6>
-                        <hr className="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style={{ width: "60px" }} />
-                        <p>
-                        {/*    <a href="#!" className="dark-grey-text">
-
-                            </a>*/}
-                        </p>
-                        <p>
-                           {/* <a href="#!" className="dark-grey-text">
-
-                            </a>
-*/}                        </p>
-                        <p>
-                       {/*     <a href="#!" className="dark-grey-text">
-
-                            </a>*/}
-                        </p>
-                        <p>
-                        {/*    <a href="#!" className="dark-grey-text">
-
-                            </a>*/}
-                        </p>
-                    </MDBCol>
-                    <MDBCol md="3" lg="2" xl="2" className="mb-4 dark-grey-text">
-                        <h6 className="text-uppercase font-weight-bold">
-                            <strong>Useful links</strong>
-                        </h6>
-                        <hr className="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style={{ width: "60px" }} />
-                        <p>
-                          {/*  <a href="#!" className="dark-grey-text">
-                                Your Account
-                            </a>*/}
-                        </p>
-                        <p>
-                    {/*        <a href="#!" className="dark-grey-text">
-                                Become an Affiliate
-                            </a>*/}
-                        </p>
-                        <p>
-                        {/*    <a href="#!" className="dark-grey-text">
-                                Shipping Rates
-                            </a>*/}
-                        </p>
-                        <p>
-                            {/*<a href="#!" className="dark-grey-text">
-                                Help
-                            </a>*/}
-                        </p>
-                    </MDBCol>
                     <MDBCol md="4" lg="3" xl="3" className="mb-4 dark-grey-text">
                         <h6 className="text-uppercase font-weight-bold">
-                            <strong>Contact</strong>
+                            <strong>Контакты</strong>
                         </h6>
                         <hr className="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style={{ width: "60px" }} />
                         <p>

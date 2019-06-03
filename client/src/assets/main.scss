@@ -352,3 +352,32 @@ span {
   font-size: 1.7em;
   margin-right: 0.9rem;
 }
+
+.ant-calendar-picker {
+  width: 50% !important;
+}
+
+.ant-time-picker {
+  width: 50% !important;
+}
+
+.ant-time-picker-icon {
+  padding-bottom: 0 !important;
+
+  svg {
+    margin-left: 9px !important;
+  }
+}
+
+.mdc-select:not(.mdc-select--disabled) {
+  background-color: rgb(236, 239, 241) !important;
+}
+
+.mdc-select .select {
+  background-color: rgb(236, 239, 241) !important;
+}
+
+.select {
+  margin-top: 20px;
+  width: 100% !important;
+}

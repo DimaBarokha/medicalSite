@@ -1,11 +1,19 @@
 import React from "react";
 import {Field, reduxForm} from "redux-form";
 import {MDBCol, MDBContainer, MDBIcon, MDBInput, MDBRow} from "mdbreact";
-import DatePick from "./DatePicker/TimePicker";
 import {validate} from "./validation";
 import InputMask from "react-input-mask";
 import MaterialInput from "@material-ui/core/Input";
 import axios from "axios";
+import {DatePicker} from 'antd';
+import {TimePicker} from 'antd';
+import locale from 'antd/lib/date-picker/locale/ru_RU';
+import 'moment/locale/ru'
+import 'antd/lib/date-picker/style/index.css'
+import 'antd/lib/time-picker/style/index.css'
+import 'antd/lib/input/style/index.css'
+import SelectService from '../Form/Select'
+import moment from "moment";
 
 const warn = values => {
     const warnings = {};
@@ -39,7 +47,6 @@ const renderMask = ({
                         {...inputProps}
                         type="tel"
                         fullWidth
-                        disableUnderline
                         placeholder="Ваш номер телефона"
                     />
                 )}
@@ -79,13 +86,15 @@ const renderField = ({
     </div>
 );
 
+
 class ValidationForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             username: "",
             lastname: "",
-            date: "",
+            date: null,
+            time: null,
             email: "",
             mobile: "",
             age: "",
@@ -93,18 +102,37 @@ class ValidationForm extends React.Component {
             doctor: ""
         };
         this.handleChange = this.handleChange.bind(this);
-        this.Submit = this.Submit.bind(this);
+        this.handleChangeDate = this.handleChangeDate.bind(this);
+        this.handleChangeTime = this.handleChangeTime.bind(this);
+        this.submitEmail = this.submitEmail.bind(this);
+    }
+
+    handleChangeDate(date) {
+        //console.log(date, dateString);
+        this.setState({date:date.format('MMMM Do YYYY')}, () => console.log(this.state.date));
     }
 
     handleChange = e => {
         this.setState({[e.target.name]: e.target.value});
+        console.log(e.target.value)
     };
+    handleChangeTime = time => {
+        this.setState({time:time.format('LTS')}, () => console.log(this.state.time));
+    };
+    DatePick = () => (
+        <DatePicker  placeholder="Дата приема"
+                    onChange={this.handleChangeDate}/>
+    );
+    TimePick = () => (
+        <TimePicker locale={locale} placeholder="Время приема" onChange={this.handleChangeTime} format={'HH:mm'}/>
+    );
 
-    async Submit() {
+    async submitEmail() {
         const {
             username,
             lastname,
             date,
+            time,
             email,
             mobile,
             age,
@@ -116,6 +144,7 @@ class ValidationForm extends React.Component {
             username,
             lastname,
             date,
+            time,
             email,
             mobile,
             age,
@@ -131,7 +160,7 @@ class ValidationForm extends React.Component {
             <MDBContainer>
                 <MDBRow className="flex-center">
                     <MDBCol md="6">
-                        <form onSubmit={handleSubmit(this.Submit)} className="md-form">
+                        <form onSubmit={handleSubmit(this.submitEmail)} className="">
                             <Field
                                 name="username"
                                 icon="user"
@@ -148,14 +177,6 @@ class ValidationForm extends React.Component {
                                 id="form2"
                                 component={renderField}
                                 label="Ваша фамилия*"
-                                onChange={this.handleChange}
-                            />
-                            <Field
-                                name="date"
-                                icon="user"
-                                type="text"
-                                id="form3"
-                                component={DatePick}
                                 onChange={this.handleChange}
                             />
 
@@ -181,7 +202,7 @@ class ValidationForm extends React.Component {
                                 icon="baby-carriage"
                                 label="Возраст пациента*"
                                 component={renderField}
-                                 onChange={this.handleChange}
+                                onChange={this.handleChange}
                             />
                             <Field
                                 name="complaints"
@@ -190,6 +211,30 @@ class ValidationForm extends React.Component {
                                 component={renderField}
                                 label="Краткое описание жалоб*"
                                 onChange={this.handleChange}
+                            />
+                            <span>
+                                    Ваши данные для приема
+                                </span>
+                            <div className="">
+
+                                <Field
+                                    name="date"
+                                    type="text"
+                                    id="form3"
+                                    component={this.DatePick}
+                                />
+                                <Field
+                                    name="time"
+                                    type="text"
+                                    id="form4"
+                                    component={this.TimePick}
+                                />
+                            </div>
+                            <Field
+                                name="date"
+                                type="text"
+                                id="form3"
+                                component={SelectService}
                             />
                             <Field
                                 name="doctor"
@@ -208,7 +253,7 @@ class ValidationForm extends React.Component {
                                     disabled={pristine || submitting}
                                     onClick={reset}
                                 >
-                                    Clear Values
+                                    Очистить
                                 </button>
                             </div>
                         </form>

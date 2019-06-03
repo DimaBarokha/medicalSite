@@ -14,6 +14,7 @@ import "./assets/_404page.scss"
 
 const App = lazy(() => import('./App'));
 const Register = lazy(() => import ('./components/Register'));
+const PriceList = lazy(() => import ('./components/PriceList'));
 const cube =
     <div className="load">
         <hr/>
@@ -29,6 +30,7 @@ ReactDOM.render(
                 <Switch>
                     <Route exact path="/" component={App}/>
                     <Route path="/register" component={Register}/>
+                    <Route path="/prices" component={PriceList}/>
                     <Route component={NotFound}/>
                 </Switch>
             </Suspense>

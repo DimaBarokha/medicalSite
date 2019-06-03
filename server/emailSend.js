@@ -52,14 +52,15 @@ app.post("/api/patient", (req, res) => {
         const htmlEMail = `
             <h1>Данные для записи пациента</h1>
             <h3>
-                <ul>   
-                    <li>${req.body.username}</li>
-                    <li>${req.body.lastname}</li>
-                    <li>${req.body.date}</li>
-                    <li>${req.body.email}</li>
-                    <li>${req.body.mobile}</li>
-                    <li>${req.body.age}</li> 
-                    <li>${req.body.doctor}</li>
+                <ul style="list-style: none">   
+                    <li><p>Имя пациента</p>${req.body.username}</li>
+                    <li><p>Фамилия записи пациента</p>${req.body.lastname}</li>
+                    <li><p>Дата записи пациента</p>${req.body.date}</li>
+                    <li><p>Время записи пациента</p>${req.body.time}</li>
+                    <li><p>email записи пациента</p>${req.body.email}</li>
+                    <li><p>Мобильный телефон пациента</p>${req.body.mobile}</li>
+                    <li><p>Возраст</p>${req.body.age}</li> 
+                    <li><p>Желаемый доктор</p>${req.body.doctor}</li>
                 </ul>
                 <h3>Жалобы(Пред)</h3>
                 <p>${req.body.complaints}</p>
@@ -92,7 +93,7 @@ app.post("/api/patient", (req, res) => {
 });
 
 const config = {
-    server: 'DESKTOP-UHGQGHR\\SQLEXPRESS',
+    server: 'DESKTOP-UHGQGHR',
     database: 'medical',
     user: 'user',
     password: '123123',
@@ -112,7 +113,20 @@ app.get('/branches', function (req, res) {
     });
 
 });
+app.get('/prices', function (req, res) {
+    new sql.ConnectionPool(config).connect().then(pool => {
+        return pool.request().query("Select id_service,title,price FROM Name_Services")
+    }).then(result => {
+        let rows = result.recordset
+        res.setHeader('Access-Control-Allow-Origin', '*')
+        res.status(200).json({data: rows});
+        sql.close();
+    }).catch(err => {
+        res.status(500).send({message: "${err}"})
+        sql.close();
+    });
 
+});
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {

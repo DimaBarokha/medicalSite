@@ -5,13 +5,10 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import BranchComponent from "./stepData/Branch/branchesComponent";
-import branchesData from "./stepData/Branch/branchesData";
 import {Doctor} from "./stepData/Doctors";
 import doctorData from "./stepData/Doctors/doctorData";
 import {MDBCol, MDBContainer, MDBRow} from "mdbreact";
 import FormPage from "./stepData/Form";
-import BranchContainer from "./stepData/Branch/BranchContainer";
 
 const styles = theme => ({
     root: {
@@ -87,12 +84,6 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
         }));
     };
 
-    handleReset = () => {
-        this.setState({
-            activeStep: 0
-        });
-    };
-
     getStepContent(stepIndex) {
         const {branches} = this.state
         switch (stepIndex) {
@@ -101,14 +92,6 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
                     <>
                         <MDBRow>
                             {branches.map(this.renderBranches)}
-                            {/*         {branchesData.map((data, index) => (
-                                <BranchComponent
-                                    data={data}
-                                    key={index}
-                                    pickDoctor={item => alert(item.name)}
-                                    cbClick={this.handleNext}
-                                />
-                            ))}*/}
                         </MDBRow>
                     </>
                 );
