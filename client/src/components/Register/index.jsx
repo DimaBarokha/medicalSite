@@ -1,7 +1,5 @@
 import React from 'react';
-import {NavLink} from "react-router-dom";
 import {MDBCol, MDBContainer, MDBRow} from "mdbreact";
-import logo from './logo.png'
 import Stepps from './Stepper'
 import Header from './stepData/Header'
 

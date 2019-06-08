@@ -14,6 +14,9 @@ import 'antd/lib/time-picker/style/index.css'
 import 'antd/lib/input/style/index.css'
 import SelectService from '../Form/Select'
 import moment from "moment";
+import Select, {Option} from '@material/react-select';
+import {makeStyles} from '@material-ui/core/styles';
+import '@material/react-select/dist/select.css';
 
 const warn = values => {
     const warnings = {};
@@ -95,6 +98,8 @@ class ValidationForm extends React.Component {
             lastname: "",
             date: null,
             time: null,
+            serviceNames: [], // варианты
+            serviceName: '', //  значение
             email: "",
             mobile: "",
             age: "",
@@ -109,7 +114,20 @@ class ValidationForm extends React.Component {
 
     handleChangeDate(date) {
         //console.log(date, dateString);
-        this.setState({date:date.format('MMMM Do YYYY')}, () => console.log(this.state.date));
+        this.setState({date: date.format('MMMM Do YYYY')}, () => console.log(this.state.date));
+    }
+
+
+    getServices = _ => {
+        fetch('http://localhost:3001/prices')
+            .then(response => response.json())
+            .then(response => this.setState({serviceNames: response.data}, () => console.log(this.state.serviceNames)))
+            .catch(err => console.log(err))
+    }
+
+
+    componentDidMount() {
+        this.getServices();
     }
 
     handleChange = e => {
@@ -117,15 +135,19 @@ class ValidationForm extends React.Component {
         console.log(e.target.value)
     };
     handleChangeTime = time => {
-        this.setState({time:time.format('LTS')}, () => console.log(this.state.time));
+        this.setState({time: time.format('LTS')}, () => console.log(this.state.time));
     };
     DatePick = () => (
-        <DatePicker  placeholder="Дата приема"
+        <DatePicker placeholder="Дата приема"
                     onChange={this.handleChangeDate}/>
     );
     TimePick = () => (
-        <TimePicker locale={locale} placeholder="Время приема" onChange={this.handleChangeTime} format={'HH:mm'}/>
+        <TimePicker  minuteStep={25}  locale={locale} placeholder="Время приема" onChange={this.handleChangeTime} format={'HH:mm'}/>
     );
+
+    renderServices = ({id_service, title}) =>
+        <Option key={id_service} value={title}>{title}</Option>
+
 
     async submitEmail() {
         const {
@@ -137,6 +159,8 @@ class ValidationForm extends React.Component {
             mobile,
             age,
             complaints,
+            serviceName,
+            serviceNames,
             doctor
         } = this.state;
 
@@ -149,12 +173,31 @@ class ValidationForm extends React.Component {
             mobile,
             age,
             complaints,
+            serviceName,
+            serviceNames,
             doctor
         });
 
     }
 
+    SelectMenu = () => {
+        const {serviceNames, serviceName} = this.state
+        return (
+            <>
+                <p style={{marginTop: "20px", fontSize: "24px", marginBottom: "-20px"}}>Услуга:</p>
+                <Select
+                    className="select"
+                    value={serviceName}
+                    onChange={(evt) => this.setState({serviceName: evt.target.value}, () => console.log(this.state.serviceName))}
+                >
+                    {serviceNames.map(this.renderServices)}
+                </Select>
+            </>
+        )
+    }
+
     render() {
+
         const {handleSubmit, pristine, reset, submitting} = this.props;
         return (
             <MDBContainer>
@@ -234,7 +277,7 @@ class ValidationForm extends React.Component {
                                 name="date"
                                 type="text"
                                 id="form3"
-                                component={SelectService}
+                                component={this.SelectMenu}
                             />
                             <Field
                                 name="doctor"

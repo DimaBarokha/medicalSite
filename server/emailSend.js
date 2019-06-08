@@ -60,6 +60,7 @@ app.post("/api/patient", (req, res) => {
                     <li><p>email записи пациента</p>${req.body.email}</li>
                     <li><p>Мобильный телефон пациента</p>${req.body.mobile}</li>
                     <li><p>Возраст</p>${req.body.age}</li> 
+                    <li><p>Услуга</p>МРТ</li> 
                     <li><p>Желаемый доктор</p>${req.body.doctor}</li>
                 </ul>
                 <h3>Жалобы(Пред)</h3>

@@ -44,15 +44,14 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
 
     renderBranches = ({id_Branch, name}) =>
         <MDBCol md="4">
-        <div className="branch">
-            <input type="text" value={name}  key = {id_Branch} onClick={this.handleNext} readOnly/>
-
-        </div>
-    </MDBCol>
+            <div className="branch">
+                <input type="text" value={name} key={id_Branch} onClick={this.handleNext} readOnly/>
+            </div>
+        </MDBCol>
     getBranches = _ => {
         fetch('http://localhost:3001/branches')
             .then(response => response.json())
-            .then(response =>this.setState({branches: response.data}))
+            .then(response => this.setState({branches: response.data}))
             .catch(err => console.log(err))
     }
 
