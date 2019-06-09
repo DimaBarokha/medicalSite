@@ -1,8 +1,25 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
 import '@material/react-select/dist/select.css';
-import Select, {Option} from '@material/react-select';
+import {Select} from 'antd';
+const {Option} = Select;
 
+
+
+function onChange(value) {
+    console.log(`selected ${value}`);
+}
+
+function onBlur() {
+    console.log('blur');
+}
+
+function onFocus() {
+    console.log('focus');
+}
+
+function onSearch(val) {
+    console.log('search:', val);
+}
 export default class SelectService extends React.Component {
     constructor(props) {
         super(props)
@@ -30,11 +47,18 @@ export default class SelectService extends React.Component {
         const {serviceNames, serviceName} = this.state
         return (
             <>
-                <p style={{marginTop: "20px",fontSize:"24px",marginBottom: "-20px"}}>Услуга:</p>
                 <Select
-                    className="select"
-                    value={serviceName}
-                    onChange={(evt) => this.setState({serviceName: evt.target.value}, () => console.log(this.state.serviceName))}
+                    showSearch
+                    style={{width: "100%"}}
+                    placeholder="Select a person"
+                    optionFilterProp="children"
+                    onChange={onChange}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                    onSearch={onSearch}
+                    filterOption={(input, option) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
                 >
                     {serviceNames.map(this.renderServices)}
                 </Select>

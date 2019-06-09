@@ -12,11 +12,13 @@ import 'moment/locale/ru'
 import 'antd/lib/date-picker/style/index.css'
 import 'antd/lib/time-picker/style/index.css'
 import 'antd/lib/input/style/index.css'
-import SelectService from '../Form/Select'
-import moment from "moment";
-import Select, {Option} from '@material/react-select';
+import 'antd/lib/select/style/index.css'
+//import Select, {Option} from '@material/react-select';
 import {makeStyles} from '@material-ui/core/styles';
-import '@material/react-select/dist/select.css';
+import {Select} from 'antd';
+
+const {Option} = Select;
+
 
 const warn = values => {
     const warnings = {};
@@ -101,6 +103,7 @@ class ValidationForm extends React.Component {
             serviceNames: [], // варианты
             serviceName: '', //  значение
             email: "",
+            pickedService: null,
             mobile: "",
             age: "",
             complaints: "",
@@ -110,13 +113,18 @@ class ValidationForm extends React.Component {
         this.handleChangeDate = this.handleChangeDate.bind(this);
         this.handleChangeTime = this.handleChangeTime.bind(this);
         this.submitEmail = this.submitEmail.bind(this);
+        this.onChangeSelectMenu = this.onChangeSelectMenu.bind(this);
     }
 
     handleChangeDate(date) {
         //console.log(date, dateString);
-        this.setState({date: date.format('MMMM Do YYYY')}, () => console.log(this.state.date));
+        this.setState({date: date.format('MMMM Do YYYY')});
+
     }
 
+    onChangeSelectMenu(value) {
+        this.setState({pickedService: value});
+    }
 
     getServices = _ => {
         fetch('http://localhost:3001/prices')
@@ -142,11 +150,13 @@ class ValidationForm extends React.Component {
                     onChange={this.handleChangeDate}/>
     );
     TimePick = () => (
-        <TimePicker  minuteStep={25}  locale={locale} placeholder="Время приема" onChange={this.handleChangeTime} format={'HH:mm'}/>
+        <TimePicker minuteStep={25} locale={locale} placeholder="Время приема" onChange={this.handleChangeTime}
+                    format={'HH:mm'}/>
     );
 
-    renderServices = ({id_service, title}) =>
-        <Option key={id_service} value={title}>{title}</Option>
+
+    renderServices = ({index, title}) =>
+        <Option key={index} value={title}>{title}</Option>
 
 
     async submitEmail() {
@@ -159,8 +169,7 @@ class ValidationForm extends React.Component {
             mobile,
             age,
             complaints,
-            serviceName,
-            serviceNames,
+            pickedService,
             doctor
         } = this.state;
 
@@ -173,32 +182,17 @@ class ValidationForm extends React.Component {
             mobile,
             age,
             complaints,
-            serviceName,
-            serviceNames,
+            pickedService,
             doctor
         });
 
     }
 
-    SelectMenu = () => {
-        const {serviceNames, serviceName} = this.state
-        return (
-            <>
-                <p style={{marginTop: "20px", fontSize: "24px", marginBottom: "-20px"}}>Услуга:</p>
-                <Select
-                    className="select"
-                    value={serviceName}
-                    onChange={(evt) => this.setState({serviceName: evt.target.value}, () => console.log(this.state.serviceName))}
-                >
-                    {serviceNames.map(this.renderServices)}
-                </Select>
-            </>
-        )
-    }
 
     render() {
 
         const {handleSubmit, pristine, reset, submitting} = this.props;
+        const {serviceNames} = this.state
         return (
             <MDBContainer>
                 <MDBRow className="flex-center">
@@ -267,26 +261,34 @@ class ValidationForm extends React.Component {
                                     component={this.DatePick}
                                 />
                                 <Field
-                                    name="time"
+                                    name=""
                                     type="text"
                                     id="form4"
                                     component={this.TimePick}
                                 />
                             </div>
-                            <Field
+                            <Select
+                                showSearch
+                                style={{width: "100%"}}
+                                placeholder="Select a person"
+                                optionFilterProp="children"
+                                name="service"
+                                onChange={this.onChangeSelectMenu}
+                                onFocus={this.onFocus}
+                                onBlur={this.onBlur}
+                                onSearch={this.onSearch}
+                                filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
+                            >
+                                {serviceNames.map(this.renderServices)}
+                            </Select>
+                            {/*   <Field
                                 name="date"
                                 type="text"
                                 id="form3"
                                 component={this.SelectMenu}
-                            />
-                            <Field
-                                name="doctor"
-                                type="text"
-                                icon="user-md"
-                                label="Ваш доктор"
-                                component={renderField}
-                                onChange={this.handleChange}
-                            />
+                            />*/}
                             <div>
                                 <button type="submit" disabled={submitting} className="btn btn-primary">
                                     Отправить ваши данные
