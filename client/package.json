@@ -6,7 +6,7 @@
   "// If You want to install mdbreact from our GitLab repository, please replace '4.11.1' with gitURL provided here ->": "git+https://oauth2:<YOUR-TOKEN-GOES-HERE>@git.mdbootstrap.com/mdb/react/re-pro.git",
   "dependencies": {
     "@material-ui/core": "^3.9.3",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "body-parser": "^1.18.3",
     "concurrently": "^4.1.0",
     "eslint": "^5.12.0",
